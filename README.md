@@ -23,3 +23,4 @@ api/p/[id].js  — главный обработчик превью
 public/        — статика (если нужна)
 vercel.json    — настройки Vercel
 ```
+# Deployed to preview-server-one
