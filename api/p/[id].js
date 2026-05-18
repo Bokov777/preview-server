@@ -1,7 +1,5 @@
 // Preview handler for Vercel serverless
-// Fetches data from main server (or falls back gracefully)
-
-const MAIN_SERVER = "http://82.26.151.82:3456";
+// Works standalone — no dependency on main server
 
 function escapeHtml(text) {
   return (text || "")
@@ -18,10 +16,10 @@ export default async function handler(req, res) {
     return res.status(404).send("Not found");
   }
 
+  const MAIN_SERVER = "http://82.26.151.82:3456";
   let title = "";
   let summary = "";
   let originalUrl = "";
-  let image = "https://t.me/i/userpic/320/web_news_web.svg";
 
   // Try to fetch preview data from main server
   try {
@@ -36,34 +34,29 @@ export default async function handler(req, res) {
     }
   } catch {}
 
-  // Fallback: if main server is down, use ID-based fallback
   if (!originalUrl) {
     originalUrl = `https://t.me/web_news_web`;
-    title = title || "Новость";
+    title = title || "Последние новости";
   }
-
-  const cleanTitle = escapeHtml(title);
-  const cleanSummary = escapeHtml(summary.slice(0, 200));
-  const cleanUrl = escapeHtml(originalUrl);
 
   const html = `<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>${cleanTitle}</title>
-  <meta property="og:title" content="${cleanTitle}">
-  <meta property="og:description" content="${cleanSummary}">
-  <meta property="og:url" content="${cleanUrl}">
+  <title>${escapeHtml(title)}</title>
+  <meta property="og:title" content="${escapeHtml(title)}">
+  <meta property="og:description" content="${escapeHtml(summary.slice(0, 200))}">
+  <meta property="og:url" content="${escapeHtml(originalUrl)}">
   <meta property="og:type" content="article">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${cleanTitle}">
-  <meta name="twitter:description" content="${cleanSummary}">
-  <meta http-equiv="refresh" content="0;url=${cleanUrl}">
-  <script>location.href="${cleanUrl}"</script>
+  <meta name="twitter:title" content="${escapeHtml(title)}">
+  <meta name="twitter:description" content="${escapeHtml(summary.slice(0, 200))}">
+  <meta http-equiv="refresh" content="0;url=${escapeHtml(originalUrl)}">
+  <script>location.href="${escapeHtml(originalUrl)}"</script>
 </head>
 <body>
-  <p><a href="${cleanUrl}">${cleanTitle}</a></p>
-  <p>${cleanSummary}</p>
+  <p><a href="${escapeHtml(originalUrl)}">${escapeHtml(title)}</a></p>
+  <p>${escapeHtml(summary.slice(0, 200))}</p>
 </body>
 </html>`;
 
