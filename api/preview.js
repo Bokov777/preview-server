@@ -1,21 +1,12 @@
-module.exports = function(req, res) {
-  const url = new URL(req.url, "https://preview.vercel.app");
-  const id = url.searchParams.get("id") || "";
-  const title = id ? `📰 Новость #${id}` : "📰 Новость";
-  const articleUrl = "https://t.me/web_news_web";
-  
-  const html = `<!DOCTYPE html>
+module.exports = (req, res) => {
+  res.status(200).send(`<!DOCTYPE html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>${title}</title>
-  <meta property="og:title" content="${title}">
-  <meta property="og:url" content="${articleUrl}">
-  <meta property="og:type" content="article">
-  <meta http-equiv="refresh" content="0;url=${articleUrl}">
-</head>
-<body>OK</body>
-</html>`;
-  res.setHeader("Content-Type", "text/html; charset=utf-8");
-  res.status(200).send(html);
+<head><meta charset="UTF-8">
+<meta property="og:title" content="Тестовое превью">
+<meta property="og:description" content="Проверка работы Vercel">
+<meta property="og:url" content="https://t.me/web_news_web">
+<meta property="og:type" content="article">
+<meta http-equiv="refresh" content="0;url=https://t.me/web_news_web">
+<title>Тест</title>
+</head><body>OK</body></html>`);
 };
