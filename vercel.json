@@ -4,6 +4,7 @@
     { "src": "api/*.js", "use": "@vercel/node" }
   ],
   "routes": [
+    { "src": "/p/(.*)", "dest": "/api/preview.js?id=$1" },
     { "src": "/api/preview", "dest": "/api/preview.js" },
     { "src": "/api/preview/(.*)", "dest": "/api/preview.js" }
   ]
